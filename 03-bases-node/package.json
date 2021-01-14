@@ -9,6 +9,7 @@
   "author": "Jorge Abascal Lopez",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "yargs": "^16.2.0"
   }
 }
