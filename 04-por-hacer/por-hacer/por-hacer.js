@@ -2,34 +2,49 @@ const fs = require("fs");
 
 let listadoPorHacer = [];
 
+const guardarDB = () => {
+    
+    let datos = JSON.stringify(listadoPorHacer);
+
+        fs.writeFile(`db/data.json`, datos, error => {
+            if(error){
+                throw new Error(error);
+            }
+        });
+}
+
+const cargarDB = () => {
+    try {
+        listadoPorHacer = require("../db/data.json");   
+    } catch (error) {
+        listadoPorHacer = [];
+    }
+}
+
+const listarDB = () => {
+    let datos = require("../db/data.json");
+    return datos;
+}
+
 const crear = (descripcion) => {
     
+    cargarDB();
+
     let porHacer = {
         descripcion,
         completado: false
     }
 
     listadoPorHacer.push(porHacer);
-    
+
+    guardarDB();
+
     return porHacer;
-    /*return new Promise( ( resolve, reject ) => {
-
-        if(!descripcion){
-            reject("Agregue una descricion");
-            return;
-        }
-
-        fs.writeFile(`tarea/tareas`, descripcion, error => {
-            if(error){
-                reject(error);
-            }else{
-                resolve("Tarea creada correctamente");
-            }
-        });
-
-    });*/
 }
 
+
 module.exports = {
-    crear
+    crear,
+    guardarDB,
+    listarDB
 }
