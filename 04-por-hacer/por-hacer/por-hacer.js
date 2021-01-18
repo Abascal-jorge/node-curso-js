@@ -6,11 +6,11 @@ const guardarDB = () => {
     
     let datos = JSON.stringify(listadoPorHacer);
 
-        fs.writeFile(`db/data.json`, datos, error => {
-            if(error){
-                throw new Error(error);
-            }
-        });
+    fs.writeFile(`db/data.json`, datos, error => {
+        if(error){
+            throw new Error(error);
+        }
+    });
 }
 
 const cargarDB = () => {
@@ -22,8 +22,37 @@ const cargarDB = () => {
 }
 
 const listarDB = () => {
-    let datos = require("../db/data.json");
-    return datos;
+    cargarDB();
+    return listadoPorHacer;
+}
+
+const actualizarDB = (descripcion, completado) => {
+    cargarDB();
+
+    const nuevo = listadoPorHacer.find( lista => lista.descripcion === descripcion);
+
+    if(nuevo){
+        nuevo.completado = completado;
+        const nuevoArreglo = listadoPorHacer.filter( lista => lista.descripcion === descripcion ? nuevo : lista);
+        listadoPorHacer = nuevoArreglo;
+        guardarDB();
+        return true;
+    }else{
+        return false;
+    }
+}
+
+const eliminarTarea = ( descripcion ) => {
+    cargarDB();
+    const existente = listadoPorHacer.findIndex( lista => lista.descripcion === descripcion);
+    if(existente >= 0){
+        const tareasNuevas = listadoPorHacer.filter( lista => lista.descripcion !== descripcion);
+        listadoPorHacer = tareasNuevas;   
+        guardarDB();
+        return true;
+    }else{
+        return false;
+    }
 }
 
 const crear = (descripcion) => {
@@ -45,6 +74,7 @@ const crear = (descripcion) => {
 
 module.exports = {
     crear,
-    guardarDB,
-    listarDB
+    listarDB,
+    actualizarDB,
+    eliminarTarea
 }
