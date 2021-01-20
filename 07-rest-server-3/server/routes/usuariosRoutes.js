@@ -58,7 +58,7 @@ app.get("/usuarios", ( req, res ) => {
     //let id = req.params.id;
     let limite = Number(req.query.limite) || 5;
     let salto = Number(req.query.salto) || 5;
-    Usuario.find({})
+    Usuario.find({estado: true})
     .limit(limite)
     .skip(salto)
     .exec( ( error, usuario ) => {
@@ -69,7 +69,7 @@ app.get("/usuarios", ( req, res ) => {
             });
         } 
 
-        Usuario.count({}, (error, conteo) => {
+        Usuario.count({estado: true}, (error, conteo) => {
             res.json({
                 ok: true,
                 usuario,
@@ -77,6 +77,64 @@ app.get("/usuarios", ( req, res ) => {
             });
         });
     });
+});
+
+app.delete("/usuarios/:id", ( req, res ) => {
+    let id = req.params.id;
+    let datos = {
+        estado: false
+    };
+
+    Usuario.findByIdAndUpdate(id, datos, {new: true}, ( error, usuarioDB) => {
+        if(error){
+            return res.status(400).json({
+                ok: false,
+                error
+            });
+        }
+
+        if(!usuarioDB.estado){
+            return res.status(400).json({
+                ok: false,
+                error: {
+                    message: "Usuario no encontrado, verifica el id"
+                }
+            });
+        }
+
+        res.json({
+            ok: true,
+            usuario: usuarioDB
+        });
+
+    });
+
+    /*Eliminando fisicamente de la base de datos 
+    Usuario.findByIdAndRemove(id, ( error, resultado ) => {
+        if(error){
+            return res.status(400).json({ 
+                ok: false, 
+                error});
+        }
+
+        if(!resultado){
+            return res.status(400).json({ 
+                ok: false, 
+                error: {
+                    message: "Usuario no encontrado"
+                }
+            });
+        }
+
+        res.json({ 
+            ok: true,
+            usuario: resultado
+        });
+    });
+    */
+    
+    /*=================================================== */
+    /*=================================================== */
 });
 
 

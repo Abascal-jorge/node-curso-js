@@ -16,7 +16,14 @@ app.use( require("./routes/usuariosRoutes") );
 
 
 //Conectando a la base de datos mongooDB
-mongoose.connect(`mongodb://localhost:27017/cafe`, ( error, res ) => {
+mongoose.connect(process.env.URLDB,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true
+    }
+    , ( error, res ) => {
     
     if(error) throw error;
     console.log(`Base de datos ONLINE`);
