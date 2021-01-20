@@ -1,11 +1,9 @@
+const texto = "hola me llamo jorge";
 
+let textoArray = texto.split(" ");
 
-let num= 5;
-let num2 = 5;
-let resultado = 0;
-
-for(let i=0; i<num2; i++){
-    resultado += num;
+for(let i=0; i<textoArray.length; i++){
+    textoArray[i] = textoArray[i].charAt(0).toUpperCase() + textoArray[i].slice(1).toLowerCase();
 }
 
-console.log(resultado);
+console.log( textoArray.join( " " ) );

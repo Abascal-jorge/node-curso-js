@@ -7,7 +7,7 @@ const app = express();
 //Agregar un usuario nuevo
 app.post("/usuarios", ( req, res ) => {
     let datos = req.body;
-
+    //console.log(datos);
     let usuario = new Usuario({
         nombre: datos.nombre,
         email: datos.email,
@@ -33,6 +33,8 @@ app.post("/usuarios", ( req, res ) => {
 app.put("/usuarios/:id", ( req, res ) => {
     let id = req.params.id;
     let datos = _.pick(req.body, ["nombre", "email", "img", "role", "estado"]);
+
+    //console.log(datos);
     
     Usuario.findByIdAndUpdate(id, datos, { new: true, runValidators: true },( error, usuarioDB ) => {
 
@@ -54,7 +56,11 @@ app.put("/usuarios/:id", ( req, res ) => {
 
 app.get("/usuarios", ( req, res ) => {
     //let id = req.params.id;
+    let limite = Number(req.query.limite) || 5;
+    let salto = Number(req.query.salto) || 5;
     Usuario.find({})
+    .limit(limite)
+    .skip(salto)
     .exec( ( error, usuario ) => {
         if(error){
             return res.status(400).json({
@@ -63,9 +69,12 @@ app.get("/usuarios", ( req, res ) => {
             });
         } 
 
-        res.json({
-            ok: true,
-            usuario
+        Usuario.count({}, (error, conteo) => {
+            res.json({
+                ok: true,
+                usuario,
+                cuantos: conteo
+            });
         });
     });
 });
