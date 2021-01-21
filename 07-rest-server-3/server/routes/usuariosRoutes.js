@@ -2,6 +2,7 @@ const express = require("express");
 const _ = require("underscore");
 const bcrypt = require("bcrypt");
 const Usuario = require("../models/usuarioModels");
+const { verificaToken } = require("../middlewares/authentication");
 const app = express();
 
 //Agregar un usuario nuevo
@@ -54,7 +55,7 @@ app.put("/usuarios/:id", ( req, res ) => {
 });
 
 
-app.get("/usuarios", ( req, res ) => {
+app.get("/usuarios", verificaToken, ( req, res ) => {
     //let id = req.params.id;
     let limite = Number(req.query.limite) || 5;
     let salto = Number(req.query.salto) || 5;
