@@ -12,8 +12,7 @@ app.use(bodyParser.json());
 
 
 //Llamando rutas
-app.use( require("./routes/usuariosRoutes") );
-app.use( require("./routes/authRoute") );
+app.use( require("./routes/index") );
 
 
 //Conectando a la base de datos mongooDB

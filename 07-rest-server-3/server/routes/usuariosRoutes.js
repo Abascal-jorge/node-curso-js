@@ -3,10 +3,11 @@ const _ = require("underscore");
 const bcrypt = require("bcrypt");
 const Usuario = require("../models/usuarioModels");
 const { verificaToken } = require("../middlewares/authentication");
+const { usuarioRol } = require("../middlewares/rolUsuario");
 const app = express();
 
 //Agregar un usuario nuevo
-app.post("/usuarios", ( req, res ) => {
+app.post("/usuarios", [ verificaToken, usuarioRol ],( req, res ) => {
     let datos = req.body;
     //console.log(datos);
     let usuario = new Usuario({
@@ -31,7 +32,8 @@ app.post("/usuarios", ( req, res ) => {
 });
 
 //Actualizar un usuario
-app.put("/usuarios/:id", ( req, res ) => {
+app.put("/usuarios/:id", [verificaToken, usuarioRol ],( req, res ) => {
+
     let id = req.params.id;
     let datos = _.pick(req.body, ["nombre", "email", "img", "role", "estado"]);
 
@@ -60,8 +62,8 @@ app.get("/usuarios", verificaToken, ( req, res ) => {
     let limite = Number(req.query.limite) || 5;
     let salto = Number(req.query.salto) || 5;
     Usuario.find({estado: true})
-    .limit(limite)
-    .skip(salto)
+    //.limit(limite)
+    //.skip(salto)
     .exec( ( error, usuario ) => {
         if(error){
             return res.status(400).json({
@@ -80,7 +82,7 @@ app.get("/usuarios", verificaToken, ( req, res ) => {
     });
 });
 
-app.delete("/usuarios/:id", ( req, res ) => {
+app.delete("/usuarios/:id", verificaToken,( req, res ) => {
     let id = req.params.id;
     let datos = {
         estado: false
