@@ -22,7 +22,7 @@ process.env.CADUCIDAD_TOKEN = "1h";
 
 /*Definir la palabra secreta */
 process.env.SEED = process.env.SEED || "secret-palabra-token";
-/*
+/*secret-palabra-token-heroku
 ==================================================
         base de datos
 ==================================================
