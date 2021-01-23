@@ -7,7 +7,8 @@ const { usuarioRol } = require("../middlewares/rolUsuario");
 const app = express();
 
 //Agregar un usuario nuevo
-app.post("/usuarios", [ verificaToken, usuarioRol ],( req, res ) => {
+//[ verificaToken, usuarioRol ]
+app.post("/usuarios",[ verificaToken, usuarioRol ],( req, res ) => {
     let datos = req.body;
     //console.log(datos);
     let usuario = new Usuario({
