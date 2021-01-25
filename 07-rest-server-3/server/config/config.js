@@ -37,3 +37,12 @@ if(process.env.NODE_ENV === `dev`){
 }
 
 process.env.URLDB = urlDB;
+
+
+/*
+==================================================
+        configurando idclient google
+==================================================
+*/
+
+process.env.CLIENT_ID = "967684378270-udba3p6ua4hv3oc9ourv83pfeo2brvn4.apps.googleusercontent.com";
