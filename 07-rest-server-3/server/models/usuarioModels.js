@@ -23,7 +23,7 @@ const usuarioSchema = new Schema({
     },
     img:{
         type: String,
-        require: false
+        required: false
     },
     role:{
         type: String,

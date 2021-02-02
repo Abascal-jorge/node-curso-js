@@ -5,18 +5,24 @@ const Schema = mongoose.Schema;
 const categoriasSchema = new Schema({
      categoria : {
          type: String,
-         require: [true, "No puedes duplicar las categorias"],
+         required: [true, "No puedes duplicar las categorias"],
          unique: true
      },
      precio: {
          type: Number,
-         require: [true, "El precio es obligatorio"]
+         required: [true, "El precio es obligatorio"]
      },
-     idusuario: {
-         type: String,
-         require: [true, "El id de usuario es obligatorio"]
+     usuario: {
+         type: Schema.Types.ObjectId,
+         ref: 'Usuario',
+         required: [true, "El id de usuario es obligatorio"]
      }
 });
+
+
+
+
+categoriasSchema.plugin(uniqueValidator, { message: `{PATH} debe de ser unico`});
 
 
 module.exports = mongoose.model("Categorias", categoriasSchema);

@@ -37,8 +37,6 @@ app.put("/usuarios/:id", [verificaToken, usuarioRol ],( req, res ) => {
 
     let id = req.params.id;
     let datos = _.pick(req.body, ["nombre", "email", "img", "role", "estado"]);
-
-    //console.log(datos);
     
     Usuario.findByIdAndUpdate(id, datos, { new: true, runValidators: true },( error, usuarioDB ) => {
 
@@ -85,10 +83,34 @@ app.get("/usuarios", verificaToken, ( req, res ) => {
 
 app.delete("/usuarios/:id", verificaToken,( req, res ) => {
     let id = req.params.id;
-    let datos = {
-        estado: false
-    };
 
+    Usuario.findById(id, (error, usuarioDB) => {
+        if(error){
+            return res.status(500).json({
+                ok: false,
+                error
+            });
+        }
+
+        if(!usuarioDB){
+            return res.status(400).json({
+                ok: false,
+                error: {
+                    message: "Usuario no encontrado"
+                }
+            });
+        }
+
+        usuarioDB.estado = false;
+
+        usuarioDB.save( (error, usuarioAct) =>{
+            res.json({
+                ok: true,
+                usuario: usuarioDB
+            });
+        });
+    });
+    /*
     Usuario.findByIdAndUpdate(id, datos, {new: true}, ( error, usuarioDB) => {
         if(error){
             return res.status(400).json({
@@ -112,7 +134,7 @@ app.delete("/usuarios/:id", verificaToken,( req, res ) => {
         });
 
     });
-
+    */
     /*Eliminando fisicamente de la base de datos 
     Usuario.findByIdAndRemove(id, ( error, resultado ) => {
         if(error){
