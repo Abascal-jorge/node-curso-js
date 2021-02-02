@@ -6,10 +6,6 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 
-
-const publicPath = path.resolve(__dirname, `../public`);
-const port = process.env.PORT || 4000;
-
 //Habilitar cors
 const opcionesCors = {
     origin: process.env.FRONTEND_URL
@@ -17,11 +13,15 @@ const opcionesCors = {
 app.use( cors(opcionesCors) );
 /////////////////
 
+
+const publicPath = path.resolve(__dirname, `../public`);
+const port = process.env.PORT || 4000;
+
 app.use(express.static(publicPath));
 let io = socketIO(server);
 
 io.on("connection", (client) => {
-    console.log(client);
+    console.log("hola");
 });
 
 server.listen(port, (error) => {
