@@ -4,13 +4,13 @@ const socketIO = require("socket.io");
 const cors = require("cors");
 const http = require("http");
 const app = express();
-
+const server = http.createServer(app);
 
 //Habilitar cors
 const opcionesCors = {
     origin: process.env.FRONTEND_URL
 }
-app.use( cors(opcionesCors) );
+app.use( cors() );
 /////////////////
 
 //const publicPath = path.resolve(__dirname, `../public`);
@@ -22,21 +22,7 @@ app.get("/usuario", (req, res) => {
     });
 });
 
-
 //app.use(express.static(publicPath));
-
-app.listen(4000, (error) => {
-    if(error){
-        console.log(error);
-    }
-    console.log("Conectado al servidor....");
-});
-
-
-/*Codigo a quitar
-
-const server = http.createServer(app);
-
 
 let io = socketIO(server);
 
@@ -44,4 +30,9 @@ io.on("connection", (client) => {
     console.log("hola");
 });
 
-*/
+server.listen(4000, (error) => {
+    if(error){
+        console.log(error);
+    }
+    console.log("Conectado al servidor....");
+});
