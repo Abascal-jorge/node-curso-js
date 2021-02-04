@@ -3,9 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/estilos.css">
     <title>Document</title>
 </head>
 <body>
-    <h2>Hola</h2>
+    
+    <div class="contenedor">
+        <div>
+            <h2>Socket chat</h2>
+            <form>
+                <div>
+                    <label for="">Nombre: </label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label for="">Mensaje</label>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                </div>
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+
+    <script src="socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+
+        socket.on("connect", () => {
+            console.log("Conectando al servidor");
+        });
+    </script>
 </body>
 </html>

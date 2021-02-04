@@ -1,5 +1,5 @@
 const express = require("express");
-//const path = require("path");
+const path = require("path");
 const socketIO = require("socket.io");
 const cors = require("cors");
 const http = require("http");
@@ -13,7 +13,7 @@ const opcionesCors = {
 app.use( cors() );
 /////////////////
 
-//const publicPath = path.resolve(__dirname, `../public`);
+const publicPath = path.resolve(__dirname, `../public`);
 const port = process.env.PORT || 4000;
 
 app.get("/usuario", (req, res) => {
@@ -22,7 +22,7 @@ app.get("/usuario", (req, res) => {
     });
 });
 
-//app.use(express.static(publicPath));
+app.use(express.static(publicPath));
 
 let io = socketIO(server);
 
