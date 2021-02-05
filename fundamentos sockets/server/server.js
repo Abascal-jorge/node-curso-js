@@ -26,8 +26,24 @@ app.use(express.static(publicPath));
 
 let io = socketIO(server);
 
+//Socket 
 io.on("connection", (client) => {
-    console.log("hola");
+    console.log("Cliente conectado");
+
+    //Detectar una desconecion de un usuario
+    client.on("disconnect", () => {
+        console.log("===========Usuario desconectado===============");
+    });
+
+    //Escuchar el mensaje dewl froent
+    client.on("enviarMensaje", mensaje => {
+        console.log( mensaje );
+    });
+
+    client.emit("bienvenido", {
+        saludo: "Bienvenido, este es un mensaje desde el servidor",
+        fecha: new Date()
+    });
 });
 
 server.listen(4000, (error) => {
