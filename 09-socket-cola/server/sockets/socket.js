@@ -12,8 +12,25 @@ io.on('connection', (client) => {
        callback(ultimo);
    },);
 
-   client.emit("ticketUltimo", {
-       ultimo: claseTicket.ticketUltimo()
+   client.broadcast.emit("ticketUltimo", {
+       ultimo: claseTicket.ticketUltimo(),
+       ultimos4: claseTicket.getUltimos4()
+   });
+
+    client.on("atenderTicket", (data, callback) => {
+
+        if( !data.escritorio ){
+            return callback({ 
+                error: true,
+                mensaje: "Escritorio es necesario"
+            });
+        }
+
+        let ticketAtender= claseTicket.atenderTicket(data.escritorio);
+        
+        callback(ticketAtender);
+
+        //Actualizatr notificar cambios en los ultimos 4
     });
 
 });
