@@ -3,7 +3,7 @@ const socketIO = require("socket.io");
 const path = require("path");
 const http = require("http");
 
-
+let  port = process.env.PORT || 4000;
 const app = express();
 const server = http.createServer(app);
 
@@ -17,7 +17,7 @@ module.exports.io = socketIO(server);
 require("./sockets/socket");
 
 
-server.listen(4000, error => {
+server.listen(port, error => {
 
     if(error){
         return new Error(error);
@@ -26,3 +26,4 @@ server.listen(4000, error => {
     console.log("Conectado al servidor 4000");
 });
 
+//Hola se agrego el port para tener un puerto dinamico
