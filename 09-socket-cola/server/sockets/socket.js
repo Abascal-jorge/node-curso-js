@@ -12,13 +12,18 @@ io.on('connection', (client) => {
        callback(ultimo);
    },);
 
-   client.broadcast.emit("ticketUltimo", {
+   client.emit("ticketUltimo", {
        ultimo: claseTicket.ticketUltimo(),
        ultimos4: claseTicket.getUltimos4()
    });
 
-    client.on("atenderTicket", (data, callback) => {
+   client.broadcast.emit("compartirUltimos", {
+        ultimo: claseTicket.ticketUltimo(),
+        ultimos4: claseTicket.getUltimos4()
+   });
 
+    client.on("atenderTicket", (data, callback) => {
+        //console.log(data);
         if( !data.escritorio ){
             return callback({ 
                 error: true,

@@ -13,12 +13,21 @@ const ticket = [ticketuno, ticketdos, tickettres, ticketcuatro];
 const escritorio = [escritoriouno, escritoriodos, escritoriotres, escritoriocuatro];
 
 socket.on("ticketUltimo", data => {
+    //console.log(data.ultimos4);
+    generarHTML(data.ultimos4);
+});
 
+
+socket.on("compartirUltimos", data => {
+    //console.log(data.ultimos4);
     let audio = new Audio("audio/new-ticket.mp3");
     audio.play();
+    generarHTML(data.ultimos4);
+});
 
-    data.ultimos4.forEach( ( datos, index ) => {
+function generarHTML(ultimo4){
+    ultimo4.forEach( ( datos, index ) => {
         ticket[index].textContent = `Ticket ${datos.numero}`;
         escritorio[index].textContent = `Escritorio ${datos.escritorio}`;
     });
-});
+}
