@@ -12,8 +12,8 @@ class TicketCreado{
     constructor(){
         this.ultimo = 0;
         this.hoy = new Date().getDate();
-        let tickets = [];
-        let ultimos4 = [];
+        this.tickets = [];
+        this.ultimos4 = [];
 
         let data = require("../data/data.json");
         if( this.hoy === data.hoy){
@@ -38,6 +38,10 @@ class TicketCreado{
         return `Ticket ${this.ultimo}`;
     }
 
+    getUltimos4(){
+        return this.ultimos4;
+    }
+
     atenderTicket(escritorio){
         if(this.tickets.length === 0){
             return "No hay tickets...";
@@ -54,7 +58,7 @@ class TicketCreado{
             this.ultimos4.splice(-1, 1);
         }
 
-        console.log( this.ultimos4 );
+        //console.log( this.ultimos4 );
 
         this.grabarArchivo();
 
