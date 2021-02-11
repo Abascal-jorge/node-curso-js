@@ -17,11 +17,6 @@ io.on('connection', (client) => {
        ultimos4: claseTicket.getUltimos4()
    });
 
-   client.broadcast.emit("compartirUltimos", {
-        ultimo: claseTicket.ticketUltimo(),
-        ultimos4: claseTicket.getUltimos4()
-   });
-
     client.on("atenderTicket", (data, callback) => {
         //console.log(data);
         if( !data.escritorio ){
@@ -36,6 +31,10 @@ io.on('connection', (client) => {
         callback(ticketAtender);
 
         //Actualizatr notificar cambios en los ultimos 4
+        client.broadcast.emit("compartirUltimos", {
+            ultimo: claseTicket.ticketUltimo(),
+            ultimos4: claseTicket.getUltimos4()
+       });
     });
 
 });
