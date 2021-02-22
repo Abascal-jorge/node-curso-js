@@ -1,3 +1,4 @@
+require("./config/config");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -13,7 +14,7 @@ app.use(bodyParser.json())
 
 //Habilitar cors
 const opcionesCors = {
-    origin: process.env.FRONTEND_URL
+    origin: process.env.FRONTEND
 }
 app.use( cors(opcionesCors) );
 

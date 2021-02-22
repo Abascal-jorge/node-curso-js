@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 async function enviarCorreo(req, res){
     
     let datos = req.body;
+    const {nombre, apellido, telefono, correo, mensaje} = datos.datos;
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         service: "gmail",
@@ -14,10 +15,10 @@ async function enviarCorreo(req, res){
 
 
     let message = {
-        from: "Remitente",
-        to: ["jorgeabascal20@gmail.com", "pcspyder86@gmail.com"],
-        subject: "Message title",
-        text: `Hola buenas tardes ${datos.nombre} ${datos.apellido}, \nHemos recibido tu correo, pronto un ingeniero se contractara contigo para darle seguimiento a tu problema\nSaludos Buen Día.`
+        from: "Spyder Pc",
+        to: [correo, "pcspyder86@gmail.com"],
+        subject: "Spyder PC Reparaciones",
+        text: `Hola buenas tardes ${nombre} ${apellido}, \nHemos recibido tu correo, pronto un ingeniero se contractara contigo para darle seguimiento a tu problema.\n\nNombre: ${nombre} ${apellido}\nTelefono: ${telefono}\nCorreo: ${correo}\nDescripción Problema: ${mensaje}\n\nSaludos Buen Día.`
     };
 
 
