@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 
 let port = process.env.PORT || 4000; 
@@ -10,6 +11,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+//Habilitar cors
+const opcionesCors = {
+    origin: process.env.FRONTEND_URL
+}
+app.use( cors(opcionesCors) );
 
 app.use( require("./routes/correoRoutes") );
 

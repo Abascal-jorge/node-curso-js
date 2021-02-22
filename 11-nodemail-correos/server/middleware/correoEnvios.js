@@ -1,24 +1,23 @@
 const nodemailer = require("nodemailer");
 
-async function enviarCorreo(req, res, next){
-   
+async function enviarCorreo(req, res){
+    
+    let datos = req.body;
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: "ricky.vandervort47@ethereal.email", // generated ethereal user
-            pass: "sB2CWZ7kefQjV4Zjyk", // generated ethereal password
-        },
+        service: "gmail",
+        auth:{
+            user:"pcspyder86@gmail.com",
+            pass: "abascal12345"
+        }
     });
 
 
     let message = {
         from: "Remitente",
-        to: "wwe_abascal-654@hotmail.com",
+        to: ["jorgeabascal20@gmail.com", "pcspyder86@gmail.com"],
         subject: "Message title",
-        text: "Hola hemos recibido tu correo, en breve uno de nuestros tecnicos se pondra en contacto contigo"
+        text: `Hola buenas tardes ${datos.nombre} ${datos.apellido}, \nHemos recibido tu correo, pronto un ingeniero se contractara contigo para darle seguimiento a tu problema\nSaludos Buen Día.`
     };
 
 
@@ -36,3 +35,25 @@ async function enviarCorreo(req, res, next){
 
 module.exports = enviarCorreo;
 
+/*host: "smtp.ethereal.email",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: "ricky.vandervort47@ethereal.email", // generated ethereal user
+            pass: "sB2CWZ7kefQjV4Zjyk", // generated ethereal password
+        }, 
+        
+        
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: "ricky.vandervort47@ethereal.email", // generated ethereal user
+            pass: "sB2CWZ7kefQjV4Zjyk", // generated ethereal password
+        },
+        tls:{
+            rejectUnauthorized: false
+        }
+        
+        
+        */
