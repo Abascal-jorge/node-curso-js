@@ -1,7 +1,7 @@
 
 
 var url = ( window.location.hostname.includes('localhost') )
-    ? 'http://localhost:8080/api/auth/google'
+    ? 'http://localhost:4000/api/auth/google'
     : 'https://restserver-curso-fher.herokuapp.com/api/auth/google';
 
 function onSignIn(googleUser) {
