@@ -9,7 +9,7 @@ const { googleVerify } = require('../helpers/google-verify');
 
 const login = async(req, res = response) => {
     const { correo, password } = req.body;
-
+    //console.log(req.body);
     try {
       
         // Verificar si el email existe
@@ -56,12 +56,11 @@ const login = async(req, res = response) => {
 const googleSignin = async(req, res = response) => {
 
     const { id_token } = req.body;
-    
+    //console.log( id_token );
     try {
         const { correo, nombre, img } = await googleVerify( id_token );
 
         let usuario = await Usuario.findOne({ correo });
-
         if ( !usuario ) {
             // Tengo que crearlo
             const data = {
@@ -71,18 +70,26 @@ const googleSignin = async(req, res = response) => {
                 img,
                 google: true
             };
-
             usuario = new Usuario( data );
-            await usuario.save();
+            try {
+                await usuario.save();   
+            } catch (error) {
+                res.status(400).json({
+                    error,
+                    ok: "Error de mongo no ql"
+                });
+            }
         }
 
         // Si el usuario en DB
         if ( !usuario.estado ) {
+
             return res.status(401).json({
                 msg: 'Hable con el administrador, usuario bloqueado'
             });
         }
 
+        console.log( correo );
         // Generar el JWT
         const token = await generarJWT( usuario.id );
         
@@ -103,9 +110,20 @@ const googleSignin = async(req, res = response) => {
 
 }
 
+const renovarToken = async ( req, res ) => {
+    const  { usuario } = req;
 
+    //Generar el JWT
+    const token = await generarJWT( usuario.id );
+
+    res.json({
+        usuario,
+        token
+    });
+}
 
 module.exports = {
     login,
-    googleSignin
+    googleSignin,
+    renovarToken
 }
