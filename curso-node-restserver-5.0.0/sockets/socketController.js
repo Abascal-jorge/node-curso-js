@@ -1,16 +1,25 @@
 const { Socket } = require("socket.io");
+const  { validarJwtCliente } = require("../helpers/index");
 
-const socketController = ( socket = new Socket() ) => {
+const socketController = async ( socket = new Socket() ) => {
 
-    console.log("Usuario conectado al socket", socket.id);
+    const tokenCliente = socket.handshake.headers["x-token"];
 
-    socket.on("disconnect", (client) => {
+    const usuario = await validarJwtCliente(tokenCliente);
+
+    if( !usuario ){
+        return socket.disconnect();
+    }
+
+    console.log("Se conecto \n" + usuario.nombre);
+
+    /*socket.on("disconnect", (client) => {
         console.log("Desconectado el cliente");
     });
 
     socket.on("Mensaje", (datos) => {
         console.log(datos);
-    });
+    });*/
 
 }
 
