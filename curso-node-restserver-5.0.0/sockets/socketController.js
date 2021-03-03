@@ -20,8 +20,9 @@ const socketController = async ( socket = new Socket(), io ) => {
     io.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
     
     //Eliminar usuario o mostrar que se desconecto 
-    io.on("desconectar-sesion", ( payload ) => {
-        chatMensajes.desconectarUsuario( payload );
+    socket.on("disconnect", () => {
+        chatMensajes.desconectarUsuario(usuario.id);
+        io.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
     });
 
     console.log("Se conecto \n" + usuario.nombre);
