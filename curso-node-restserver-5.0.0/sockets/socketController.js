@@ -4,7 +4,8 @@ const { ChatMensajes } = require("../models/index");
 
 const chatMensajes = new ChatMensajes();
 
-const socketController = async ( socket = new Socket(), io ) => {
+const socketController = async ( socket ) => {
+    //  = new Socket(), io 
     const tokenCliente = socket.handshake.headers["x-token"];
 
     const usuario = await validarJwtCliente(tokenCliente);
@@ -16,7 +17,7 @@ const socketController = async ( socket = new Socket(), io ) => {
     //Agregar el usuario conectado
     chatMensajes.conectarUsuario( usuario );
 
-    io.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
+    socket.broadcast.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
 
     //Eliminar usuario o mostrar que se desconecto 
     socket.on("disconnect", () => {
