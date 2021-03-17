@@ -13,7 +13,7 @@ class ChatMensajes {
     }
 
     get ultimos10(){
-        this.mensajes = this.mensajes.splice(0, 9);
+        this.mensajes = this.mensajes.splice(0, 10);
         return this.mensajes;
     }
 
@@ -22,7 +22,7 @@ class ChatMensajes {
     }
 
     enviarMensaje( uid, nombre, mensaje ){
-        new Mensaje(uid, nombre, mensaje);
+        this.mensajes.unshift( new Mensaje(uid, nombre, mensaje) );
     }
 
     conectarUsuario( usuario ){

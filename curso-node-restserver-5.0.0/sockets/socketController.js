@@ -27,6 +27,14 @@ const socketController = async ( socket  = new Socket(), io  ) => {
         io.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
     });
 
+    ////////////
+    io.emit("recibir-mensajes", { mensajes: chatMensajes.ultimos10 });
+    socket.on("mensaje-nuevo", datos => {
+        const { uid, nombre, mensaje } = datos;
+        chatMensajes.enviarMensaje( usuario.id, usuario.nombre, mensaje);
+        io.emit("recibir-mensajes", { mensajes: chatMensajes.ultimos10 });
+    });
+
     console.log("Se conecto \n" + usuario.nombre);
 }
 
