@@ -1,10 +1,11 @@
+const { isValidObjectId } = require("mongoose");
 const { Socket } = require("socket.io");
 const  { validarJwtCliente } = require("../helpers/index");
 const { ChatMensajes } = require("../models/index");
 
 const chatMensajes = new ChatMensajes();
 
-const socketController = async ( socket ) => {
+const socketController = async ( socket  = new Socket(), io  ) => {
     //  = new Socket(), io 
     const tokenCliente = socket.handshake.headers["x-token"];
 
@@ -17,16 +18,16 @@ const socketController = async ( socket ) => {
     //Agregar el usuario conectado
     chatMensajes.conectarUsuario( usuario );
 
-    socket.broadcast.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
+    io.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
+    //socket.broadcast.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
 
     //Eliminar usuario o mostrar que se desconecto 
     socket.on("disconnect", () => {
         chatMensajes.desconectarUsuario(usuario.id);
-        socket.broadcast.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
+        io.emit("usuarios-activos",  { activos: chatMensajes.usuariosArr });
     });
 
     console.log("Se conecto \n" + usuario.nombre);
-
 }
 
 module.exports = {
