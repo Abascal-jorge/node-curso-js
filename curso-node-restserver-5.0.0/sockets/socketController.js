@@ -8,12 +8,12 @@ const chatMensajes = new ChatMensajes();
 const socketController = async ( socket  = new Socket(), io  ) => {
     //  = new Socket(), io 
     const tokenCliente = socket.handshake.headers["x-token"];
-
     const usuario = await validarJwtCliente(tokenCliente);
-
     if( !usuario ){
         return socket.disconnect();
     }
+
+    socket.join(usuario.id);
 
     //Agregar el usuario conectado
     chatMensajes.conectarUsuario( usuario );
@@ -31,8 +31,12 @@ const socketController = async ( socket  = new Socket(), io  ) => {
     io.emit("recibir-mensajes", { mensajes: chatMensajes.ultimos10 });
     socket.on("mensaje-nuevo", datos => {
         const { uid, nombre, mensaje } = datos;
-        chatMensajes.enviarMensaje( usuario.id, usuario.nombre, mensaje);
-        io.emit("recibir-mensajes", { mensajes: chatMensajes.ultimos10 });
+        if( uid ){
+            socket.to(uid).emit("mensaje-privado", { de: nombre, mensaje});
+        }else{
+            chatMensajes.enviarMensaje( usuario.id, usuario.nombre, mensaje);
+            io.emit("recibir-mensajes", { mensajes: chatMensajes.ultimos10 });
+        }
     });
 
     console.log("Se conecto \n" + usuario.nombre);
