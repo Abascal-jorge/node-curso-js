@@ -32,7 +32,8 @@ const socketController = async ( socket  = new Socket(), io  ) => {
     socket.on("mensaje-nuevo", datos => {
         const { uid, nombre, mensaje } = datos;
         if( uid ){
-            socket.to(uid).emit("mensaje-privado", { de: nombre, mensaje});
+            chatMensajes.enviarMensajePrivado( uid, usuario.nombre, mensaje, usuario.id );
+            socket.to(uid).emit("mensaje-privado", { mensajesPrivados: chatMensajes.ultimosPrivados( uid, usuario.id )});
         }else{
             chatMensajes.enviarMensaje( usuario.id, usuario.nombre, mensaje);
             io.emit("recibir-mensajes", { mensajes: chatMensajes.ultimos10 });

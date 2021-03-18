@@ -9,6 +9,7 @@ class Mensaje{
 class ChatMensajes {
     constructor(){
         this.mensajes = [];
+        this.mensajesPrivado = [];
         this.usuarios = {};
     }
 
@@ -17,12 +18,20 @@ class ChatMensajes {
         return this.mensajes;
     }
 
+    ultimosPrivados( uid, uidRemitente ){
+        return this.mensajesPrivado.filter( menPrivado => menPrivado.uid === uid && menPrivado.uidRemitente === uidRemitente);
+    }
+
     get usuariosArr(){
         return Object.values( this.usuarios );
     }
 
     enviarMensaje( uid, nombre, mensaje ){
         this.mensajes.unshift( new Mensaje(uid, nombre, mensaje) );
+    }
+
+    enviarMensajePrivado( uid, nombre, mensaje, uidRemitente){
+        this.mensajesPrivado.unshift( { uid, de: nombre, mensaje, uidRemitente } );
     }
 
     conectarUsuario( usuario ){
