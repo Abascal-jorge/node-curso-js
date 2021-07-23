@@ -16,6 +16,7 @@ app.use(bodyParser.json())
 const opcionesCors = {
     origin: process.env.FRONTEND
 }
+
 app.use( cors(opcionesCors) );
 
 app.use( require("./routes/correoRoutes") );
